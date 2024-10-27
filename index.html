@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Stream</title>
+    <title>Live Stream Web</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Live Stream</h1>
-        <video id="video" autoplay playsinline></video>
-        <button id="startButton">Start Streaming</button>
-        <button id="stopButton" disabled>Stop Streaming</button>
+        <h1>Live Webcam Stream</h1>
+        <div class="video-container">
+            <video id="liveVideo" autoplay playsinline muted></video>
+            <div id="loading" class="loading">Loading...</div>
+        </div>
+        <button id="toggleButton">Start Streaming</button>
     </div>
     <script src="script.js"></script>
 </body>
