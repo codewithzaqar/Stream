@@ -46,9 +46,9 @@ h1 {
     bottom: 10px;
     right: 10px;
     width: 150px;
-    border: 2px solid #fff;
+    /*border: 2px solid #fff;*/
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0, 0.2);
+    /*box-shadow: 0 4px 8px rgba(0,0,0, 0.2);*/
 }
 
 .loading {
@@ -82,4 +82,8 @@ button:hover {
 
 button + button {
     margin-left: 10px;
+}
+
+#toggleCameraButton {
+    margin-top: 20px; /* Add some margin for better spacing */
 }

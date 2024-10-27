@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Stream Web</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Screen Sharing with Camera Overlay</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Live Webcam Stream</h1>
-        <div class="video-container">
-            <!-- Screen sharing video -->
-            <video id="screenVideo" autoplay playsinline muted></video>
-            <!-- Webcam video for overlay -->
-             <video id="cameraVideo" autoplay playsinline muted></video>
-            <div id="loading" class="loading">Loading...</div>
-        </div>
-        <button id="toggleStreamButton">Start Streaming</button>
-        <button id="switchSourceButton">Switch to Screen</button>
+  <div class="container">
+    <h1>Live Stream Web</h1>
+    <div class="video-container">
+      <!-- Screen sharing video -->
+      <video id="screenVideo" autoplay playsinline muted></video>
+      <!-- Webcam video for overlay -->
+      <video id="cameraVideo" autoplay playsinline muted></video>
+      <div id="loading" class="loading">Loading...</div>
     </div>
-    <script src="script.js"></script>
+    <button id="toggleStreamButton">Start Sharing</button>
+    <button id="toggleCameraButton" disabled>Turn Camera On</button>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
