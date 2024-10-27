@@ -1,62 +1,55 @@
-const videoElement = document.getElementById('liveVideo');
+const screenVideo = document.getElementById('screenVideo');
+const cameraVideo = document.getElementById('cameraVideo');
 const toggleStreamButton = document.getElementById('toggleStreamButton');
-const switchSourceButton = document.getElementById('switchSourceButton');
 const loadingOverlay = document.getElementById('loading');
 
-let stream;           // To store the MediaStream
-let isScreen = false; // Toggle between screen and webcam
+let screenStream;  // To store the screen-sharing stream
+let cameraStream;  // To store the webcam stream
 
-// Function to start webcam or screen sharing based on current mode
-async function startStream() {
+// Function to start both screen sharing and webcam streams
+async function startStreams() {
   loadingOverlay.style.display = 'block';
   try {
-    // If isScreen is true, use getDisplayMedia for screen sharing; otherwise, use getUserMedia for webcam
-    if (isScreen) {
-      stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
-      switchSourceButton.textContent = 'Switch to Camera';
-    } else {
-      stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: 'user'  // Use the front camera by default
-        }
-      });
-      switchSourceButton.textContent = 'Switch to Screen';
-    }
+    // Request screen-sharing stream
+    screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+    screenVideo.srcObject = screenStream;
 
-    videoElement.srcObject = stream;
-    toggleStreamButton.textContent = 'Stop Streaming';
+    // Request webcam stream
+    cameraStream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: 'user'  // Use the front camera by default
+      }
+    });
+    cameraVideo.srcObject = cameraStream;
 
+    toggleStreamButton.textContent = 'Stop Sharing';
   } catch (error) {
     console.error('Error accessing media:', error);
-    alert('Error: Could not access media. Please check permissions.');
+    alert('Could not access screen or webcam. Please check permissions.');
   } finally {
     loadingOverlay.style.display = 'none';
   }
 }
 
-// Function to stop the current stream
-function stopStream() {
-  if (stream) {
-    stream.getTracks().forEach(track => track.stop()); // Stop all tracks
-    videoElement.srcObject = null;
-    toggleStreamButton.textContent = 'Start Streaming';
+// Function to stop both screen-sharing and webcam streams
+function stopStreams() {
+  // Stop all tracks in both streams
+  if (screenStream) {
+    screenStream.getTracks().forEach(track => track.stop());
+    screenVideo.srcObject = null;
   }
+  if (cameraStream) {
+    cameraStream.getTracks().forEach(track => track.stop());
+    cameraVideo.srcObject = null;
+  }
+  toggleStreamButton.textContent = 'Start Sharing';
 }
 
-// Event listener for the start/stop streaming button
+// Event listener for start/stop button
 toggleStreamButton.addEventListener('click', () => {
-  if (toggleStreamButton.textContent === 'Start Streaming') {
-    startStream();
+  if (toggleStreamButton.textContent === 'Start Sharing') {
+    startStreams();
   } else {
-    stopStream();
-  }
-});
-
-// Event listener for the switch source button
-switchSourceButton.addEventListener('click', () => {
-  isScreen = !isScreen;  // Toggle the isScreen flag
-  if (stream) {
-    stopStream();  // Stop the current stream
-    startStream(); // Start the new stream with the selected source
+    stopStreams();
   }
 });
