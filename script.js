@@ -1,41 +1,49 @@
 const videoElement = document.getElementById('liveVideo');
 const toggleStreamButton = document.getElementById('toggleStreamButton');
-const switchCameraButton = document.getElementById('switchCameraButton');
+const switchSourceButton = document.getElementById('switchSourceButton');
 const loadingOverlay = document.getElementById('loading');
 
-let stream;  // To hold the MediaStream
-let isFrontCamera = true;  // To toggle between front and rear cameras
+let stream;           // To store the MediaStream
+let isScreen = false; // Toggle between screen and webcam
 
-// Function to start the webcam stream with specified camera direction
+// Function to start webcam or screen sharing based on current mode
 async function startStream() {
   loadingOverlay.style.display = 'block';
   try {
-    // Set constraints to request the front or rear camera
-    stream = await navigator.mediaDevices.getUserMedia({
-      video: {
-        facingMode: isFrontCamera ? 'user' : 'environment'
-      }
-    });
+    // If isScreen is true, use getDisplayMedia for screen sharing; otherwise, use getUserMedia for webcam
+    if (isScreen) {
+      stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+      switchSourceButton.textContent = 'Switch to Camera';
+    } else {
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: 'user'  // Use the front camera by default
+        }
+      });
+      switchSourceButton.textContent = 'Switch to Screen';
+    }
+
     videoElement.srcObject = stream;
     toggleStreamButton.textContent = 'Stop Streaming';
+
   } catch (error) {
-    console.error('Error accessing webcam:', error);
-    alert('Could not access the webcam. Please check permissions.');
+    console.error('Error accessing media:', error);
+    alert('Error: Could not access media. Please check permissions.');
   } finally {
     loadingOverlay.style.display = 'none';
   }
 }
 
-// Function to stop the webcam stream
+// Function to stop the current stream
 function stopStream() {
   if (stream) {
-    stream.getTracks().forEach(track => track.stop());  // Stop all tracks
-    videoElement.srcObject = null;  // Clear video source
+    stream.getTracks().forEach(track => track.stop()); // Stop all tracks
+    videoElement.srcObject = null;
     toggleStreamButton.textContent = 'Start Streaming';
   }
 }
 
-// Toggle stream on button click
+// Event listener for the start/stop streaming button
 toggleStreamButton.addEventListener('click', () => {
   if (toggleStreamButton.textContent === 'Start Streaming') {
     startStream();
@@ -44,11 +52,11 @@ toggleStreamButton.addEventListener('click', () => {
   }
 });
 
-// Switch between front and rear camera
-switchCameraButton.addEventListener('click', () => {
-  isFrontCamera = !isFrontCamera;  // Toggle camera direction
+// Event listener for the switch source button
+switchSourceButton.addEventListener('click', () => {
+  isScreen = !isScreen;  // Toggle the isScreen flag
   if (stream) {
     stopStream();  // Stop the current stream
-    startStream();  // Start with the new camera direction
+    startStream(); // Start the new stream with the selected source
   }
 });
