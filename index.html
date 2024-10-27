@@ -3,21 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Screen Sharing with Camera Overlay</title>
+  <title>Stream with Camera Overlay</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Live Stream Web</h1>
-    <div class="video-container">
-      <!-- Screen sharing video -->
-      <video id="screenVideo" autoplay playsinline muted></video>
-      <!-- Webcam video for overlay -->
-      <video id="cameraVideo" autoplay playsinline muted></video>
-      <div id="loading" class="loading">Loading...</div>
-    </div>
-    <button id="toggleStreamButton">Start Sharing</button>
-    <button id="toggleCameraButton" disabled>Turn Camera On</button>
+  <div class="app-container">
+    <header>
+      <h1>Live Stream</h1>
+    </header>
+    <main>
+      <div class="video-container">
+        <video id="screenVideo" autoplay playsinline muted class="video-screen"></video>
+        <video id="cameraVideo" autoplay playsinline muted class="video-camera"></video>
+        <div id="loading" class="loading">Loading...</div>
+      </div>
+      <div class="controls">
+        <button id="toggleStreamButton" class="btn"><i class="fas fa-video"></i> Start Sharing</button>
+        <button id="toggleCameraButton" class="btn" disabled><i class="fas fa-camera"></i> Turn Camera On</button>
+      </div>
+    </main>
+    <footer>
+      <p>&copy; 2024 Stream Web Application</p>
+    </footer>
   </div>
   <script src="script.js"></script>
 </body>
